@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Planilha para Maiúsculas</title>
+    <!-- Inclui Tailwind CSS para estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter como padrão para a página */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilos básicos para o foco do textarea */
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Cor de foco azul */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-4xl border border-gray-200">
+        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8 leading-tight">
+            Conversor de Planilha <span class="text-blue-600">para Maiúsculas</span>
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Área de entrada para colar dados -->
+            <div>
+                <label for="inputData" class="block text-xl font-semibold text-gray-700 mb-3">
+                    Cole seus dados da planilha aqui:
+                </label>
+                <textarea
+                    id="inputData"
+                    class="w-full h-64 p-4 text-lg border border-gray-300 rounded-lg resize-y focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out placeholder-gray-400 shadow-sm"
+                    placeholder="Cole os dados da sua planilha (ex: de Excel, Google Sheets) aqui..."
+                ></textarea>
+                <p class="text-sm text-gray-500 mt-2">
+                    Os dados serão convertidos automaticamente para maiúsculas ao colar.
+                </p>
+            </div>
+
+            <!-- Área de saída para exibir dados em maiúsculas -->
+            <div>
+                <label for="outputData" class="block text-xl font-semibold text-gray-700 mb-3">
+                    Dados em Maiúsculas:
+                </label>
+                <textarea
+                    id="outputData"
+                    class="w-full h-64 p-4 text-lg border border-gray-300 rounded-lg bg-gray-50 text-gray-800 resize-y read-only:bg-gray-100 focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out shadow-sm"
+                    readonly
+                    placeholder="O texto convertido aparecerá aqui..."
+                ></textarea>
+                <div class="flex justify-end mt-4">
+                    <button id="copyButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h2m4-14h2a2 2 0 012 2v10a2 2 0 01-2 2h-2m-4-10v4m0 0h-4m4 0h4"></path></svg>
+                        Copiar para Área de Transferência
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensagem de confirmação de cópia -->
+        <div id="messageBox" class="mt-6 p-4 rounded-lg text-center text-lg hidden bg-green-100 text-green-800 border border-green-200">
+            Copiado para a área de transferência!
+        </div>
+    </div>
+
+    <script>
+        // Obtém referências para os elementos DOM
+        const inputData = document.getElementById('inputData');
+        const outputData = document.getElementById('outputData');
+        const copyButton = document.getElementById('copyButton');
+        const messageBox = document.getElementById('messageBox');
+
+        /**
+         * Manipula o evento de colar no textarea de entrada.
+         * Converte o texto colado para maiúsculas e exibe na área de saída.
+         */
+        inputData.addEventListener('paste', (event) => {
+            // Previne o comportamento padrão de colar
+            event.preventDefault();
+
+            // Obtém o texto da área de transferência
+            const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+
+            // Converte o texto para maiúsculas
+            const upperCaseText = pastedText.toUpperCase();
+
+            // Define o valor do textarea de entrada para o texto original colado
+            // (Para o usuário ver o que colou antes da conversão, embora a saída mostre o maiúsculo)
+            inputData.value = pastedText;
+
+            // Exibe o texto em maiúsculas na área de saída
+            outputData.value = upperCaseText;
+
+            // Limpa a mensagem da caixa de mensagem (se estiver visível)
+            hideMessageBox();
+        });
+
+        /**
+         * Manipula o clique no botão de copiar.
+         * Copia o conteúdo da área de saída para a área de transferência.
+         */
+        copyButton.addEventListener('click', () => {
+            // Seleciona o texto na área de saída
+            outputData.select();
+            outputData.setSelectionRange(0, outputData.value.length); // Para dispositivos móveis
+
+            try {
+                // Tenta copiar o texto para a área de transferência
+                // document.execCommand('copy') é usado porque navigator.clipboard.writeText()
+                // pode não funcionar em alguns ambientes de iframe.
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showMessageBox('Copiado para a área de transferência!');
+                } else {
+                    showMessageBox('Erro ao copiar. Por favor, copie manualmente.', 'bg-red-100 text-red-800 border-red-200');
+                }
+            } catch (err) {
+                showMessageBox('Erro ao copiar: ' + err.message + '. Por favor, copie manualmente.', 'bg-red-100 text-red-800 border-red-200');
+            }
+        });
+
+        /**
+         * Exibe uma mensagem na caixa de mensagem por um tempo limitado.
+         * @param {string} message - A mensagem a ser exibida.
+         * @param {string} [tailwindClasses='bg-green-100 text-green-800 border-green-200'] - Classes Tailwind para o estilo da caixa de mensagem.
+         */
+        let messageTimeout;
+        function showMessageBox(message, tailwindClasses = 'bg-green-100 text-green-800 border-green-200') {
+            // Limpa qualquer timeout anterior para evitar múltiplos timers
+            if (messageTimeout) {
+                clearTimeout(messageTimeout);
+            }
+
+            messageBox.textContent = message;
+            messageBox.className = `mt-6 p-4 rounded-lg text-center text-lg ${tailwindClasses} border`;
+            messageBox.classList.remove('hidden');
+
+            // Esconde a mensagem após 3 segundos
+            messageTimeout = setTimeout(() => {
+                hideMessageBox();
+            }, 3000);
+        }
+
+        /**
+         * Esconde a caixa de mensagem.
+         */
+        function hideMessageBox() {
+            messageBox.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
