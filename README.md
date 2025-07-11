@@ -24,7 +24,3 @@ O **Sheet Uppercaser APP** é uma ferramenta online que transforma o conteúdo d
 [https://juanfelipemm.github.io/SheetUppercaserAPP/](https://juanfelipemm.github.io/SheetUppercaserAPP/)
 
 ---
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Excel%20Green-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white"/>
-</p>
