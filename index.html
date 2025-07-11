@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Planilha para Maiúsculas</title>
-    <!-- Inclui Tailwind CSS para estilização -->
+    <link rel="icon" href="path/to/favicon.ico" type="image/x-icon"> <!-- Adicione o caminho correto para o favicon -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Define a fonte Inter como padrão para a página */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #e6f4ea; /* Cor de fundo verde claro semelhante ao Excel */
         }
         /* Estilos básicos para o foco do textarea */
         textarea:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Cor de foco azul */
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.5); /* Cor de foco verde */
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4">
     <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-4xl border border-gray-200">
         <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8 leading-tight">
-            Conversor de Planilha <span class="text-blue-600">para Maiúsculas</span>
+            Conversor de Planilha <span class="text-green-600">para Maiúsculas</span>
         </h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -32,7 +33,7 @@
                 </label>
                 <textarea
                     id="inputData"
-                    class="w-full h-64 p-4 text-lg border border-gray-300 rounded-lg resize-y focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out placeholder-gray-400 shadow-sm"
+                    class="w-full h-64 p-4 text-lg border border-gray-300 rounded-lg resize-y focus:ring-4 focus:ring-green-200 transition duration-300 ease-in-out placeholder-gray-400 shadow-sm"
                     placeholder="Cole os dados da sua planilha (ex: de Excel, Google Sheets) aqui..."
                 ></textarea>
                 <p class="text-sm text-gray-500 mt-2">
@@ -47,12 +48,12 @@
                 </label>
                 <textarea
                     id="outputData"
-                    class="w-full h-64 p-4 text-lg border border-gray-300 rounded-lg bg-gray-50 text-gray-800 resize-y read-only:bg-gray-100 focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out shadow-sm"
+                    class="w-full h-64 p-4 text-lg border border-gray-300 rounded-lg bg-gray-50 text-gray-800 resize-y read-only:bg-gray-100 focus:ring-4 focus:ring-green-200 transition duration-300 ease-in-out shadow-sm"
                     readonly
                     placeholder="O texto convertido aparecerá aqui..."
                 ></textarea>
                 <div class="flex justify-end mt-4">
-                    <button id="copyButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center">
+                    <button id="copyButton" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h2m4-14h2a2 2 0 012 2v10a2 2 0 01-2 2h-2m-4-10v4m0 0h-4m4 0h4"></path></svg>
                         Copiar para Área de Transferência
                     </button>
